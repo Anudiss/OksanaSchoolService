@@ -2,8 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:School"
+             xmlns:permissions="clr-namespace:School.Resourses"
              StartupUri="/Windows/MainWindow/MainWindow.xaml">
     <Application.Resources>
+        <permissions:PermissionToVisiblityConverter x:Key="PermissionToVisibilityConverter"/>
+
         <Color x:Key="MainBackgroundColor" A="255" R="255" G="255" B="255"/>
         <Color x:Key="AdditionalBackgroundColor" A="255" R="231" G="250" B="191"/>
         <Color x:Key="AccentBackgroundColor" A="255" R="4" G="160" B="255"/>
@@ -22,7 +25,7 @@
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="{TemplateBinding Margin}"
-                                    CornerRadius="10">
+                                    CornerRadius="5">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
                                                   Margin="{TemplateBinding Padding}"/>
                             </Border>

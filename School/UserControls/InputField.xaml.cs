@@ -56,6 +56,29 @@ namespace School.UserControls
         public static readonly DependencyProperty PlaceholderVisibilityProperty =
             DependencyProperty.Register("PlaceholderVisibility", typeof(Visibility), typeof(InputField), new PropertyMetadata(Visibility.Visible));
         #endregion
+        #region TextWrapping
+        public TextWrapping TextWrapping
+        {
+            get { return (TextWrapping)GetValue(TextWrappingProperty); }
+            set { SetValue(TextWrappingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TextWrapping.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextWrappingProperty =
+            DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(InputField));
+        #endregion
+        #region IsReadonly
+        public bool IsReadOnly
+        {
+            get { return (bool)GetValue(IsReadOnlyProperty); }
+            set { SetValue(IsReadOnlyProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(InputField));
+        #endregion
+
 
         public event TextChangedEventHandler TextChanged;
 
@@ -66,8 +89,8 @@ namespace School.UserControls
 
         private void TextContainer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PlaceholderVisibility = TextContainer.Text == string.Empty ? Visibility.Visible : Visibility.Collapsed;
             Text = TextContainer.Text;
+            PlaceholderVisibility = Text == string.Empty ? Visibility.Visible : Visibility.Collapsed;
             TextChanged?.Invoke(sender, e);
         }
     }

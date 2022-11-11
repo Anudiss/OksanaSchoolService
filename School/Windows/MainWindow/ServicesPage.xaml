@@ -46,28 +46,26 @@
                  HorizontalAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type database:Service}">
-                    <uc:ServiceCard x:Name="Card" Service="{Binding Path=.}"/>
+                    <uc:ServiceCard x:Name="Card" Service="{Binding Path=.}"
+                                    EditButtonPressed="Card_EditButtonPressed"
+                                    RemoveButtonPressed="Card_RemoveButtonPressed"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Background" Value="{Binding Background}"/>
-                    <Setter Property="Cursor" Value="Hand"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
-                                <StackPanel Background="{TemplateBinding Background}">
-                                    <Separator x:Name="Separator"/>
+                                <StackPanel Background="{TemplateBinding Background}" Margin="0 0 0 5">
+                                    <Rectangle x:Name="Separator" Height="1.2" Fill="Black"/>
                                     <ContentPresenter/>
                                 </StackPanel>
                                 <ControlTemplate.Triggers>
                                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
                                         <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
                                     </DataTrigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightBlue"/>
-                                    </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>

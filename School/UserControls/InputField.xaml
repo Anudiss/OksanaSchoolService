@@ -18,6 +18,9 @@
         <TextBox Grid.Row="1" x:Name="TextContainer" Background="Transparent"
                  Padding="0 2"
                  Text="{Binding Path=Text, Mode=TwoWay}"
-                 TextChanged="TextContainer_TextChanged"/>
+                 IsReadOnly="{Binding Path=IsReadOnly}"
+                 TextWrapping="{Binding Path=TextWrapping}"
+                 TextChanged="TextContainer_TextChanged">
+        </TextBox>
     </Grid>
 </UserControl>

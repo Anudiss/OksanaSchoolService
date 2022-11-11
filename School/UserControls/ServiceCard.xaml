@@ -4,15 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:School.UserControls"
+             xmlns:permissions="clr-namespace:School.Resourses"
              xmlns:db="clr-namespace:School"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
              Name="ServiceCardRoot">
 
     <UserControl.Resources>
         <local:CostDiscountConverter x:Key="CostDiscountConverter"/>
         <local:DiscountVisibilityConverter x:Key="DiscountVisibilityConverter"/>
         <local:TimeToTextConverter x:Key="TimeToTextConverter"/>
+        <local:TextDecorationConverter x:Key="TextDecorationConverter"/>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Background" Value="White"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border"
+                                BorderBrush="Black" BorderThickness="2"
+                                CornerRadius="5" Background="{TemplateBinding Background}"
+                                Margin="20 0">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              Margin="15 2"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Panel.Background" Value="LightBlue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     
     <Grid x:Name="Grid"
@@ -24,6 +52,8 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="1"
@@ -39,26 +69,38 @@
 
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <Label Content="Цена: " FontSize="14"/>
+
+                <TextBlock Text="{Binding ElementName=ServiceCardRoot, Path=Service.Cost, StringFormat='{}{0:#,#.00} '}"
+                           TextDecorations="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource TextDecorationConverter}}"
+                           VerticalAlignment="Center"
+                           FontSize="14"/>
+
                 <TextBlock Text="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource CostDiscountConverter}}"
-                       TextDecorations="Strikethrough"
-                       Visibility="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource DiscountVisibilityConverter}}"
-                       VerticalAlignment="Center"
-                       Margin="0 0 20 0"
-                       FontSize="14"/>
-
-
-                <TextBlock Text="{Binding ElementName=ServiceCardRoot, Path=Service.Cost, StringFormat={}{0:#,#.00}}"
+                           Visibility="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource DiscountVisibilityConverter}}"
                            VerticalAlignment="Center"
                            FontSize="14"/>
                 <Label Content="рублей" FontSize="14"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label Content="Время выполенения: " FontSize="14"/>
+                <Label Content="за" FontSize="14"/>
                 <TextBlock Text="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource TimeToTextConverter}}"
                            VerticalAlignment="Center"
                            FontSize="14"/>
             </StackPanel>
         </Grid>
+
+        <TextBlock Grid.Row="2" Grid.Column="1"
+                   FontSize="14" FontWeight="Medium"
+                   Text="{Binding ElementName=ServiceCardRoot, Path=Service.Discount, StringFormat={}^ скидка {0}%}"
+                   Visibility="{Binding ElementName=ServiceCardRoot, Path=Service, Converter={StaticResource DiscountVisibilityConverter}}"/>
+
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal"
+                    Margin="0 15 0 5">
+            <Button Content="Редактировать" Click="EditButton_Click"
+                    Visibility="{Binding ConverterParameter={x:Static permissions:Permission.EditService}, Converter={StaticResource PermissionToVisibilityConverter}}"/>
+            <Button Content="Удалить" Click="RemoveButton_Click"
+                    Visibility="{Binding ConverterParameter={x:Static permissions:Permission.RemoveService}, Converter={StaticResource PermissionToVisibilityConverter}}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -1,7 +1,10 @@
 ﻿using School.DatabaseConnection;
+using School.Windows.EditServiceWindow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Infrastructure.DependencyResolution;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -105,13 +108,40 @@ namespace School.Windows.MainWindow
                   );
 
         private bool IsSearched(Service service) =>
-            Regex.IsMatch($"{service.Title} {service.Description}".ToLower().Trim(), $@"{SearchField.Text.ToLower().Trim()}.*");
+            Regex.IsMatch(input:   $"{service.Title} {service.Description}".ToLower().Trim(), 
+                          pattern: $@"{SearchField.Text.ToLower().Trim()}.*");
 
         private async void SearchField_TextChanged(object sender, TextChangedEventArgs e) =>
             await DoStuff();
 
         private async void SortingOrFilterChanged(object sender, SelectionChangedEventArgs e) =>
             await DoStuff();
+
+        private async void Card_EditButtonPressed(Service service)
+        {
+            EditServiceWindow.EditServiceWindow editServiceWindow = new EditServiceWindow.EditServiceWindow()
+            {
+                Service = service
+            };
+            editServiceWindow.ShowDialog();
+            await Refresh();
+        }
+
+        private async void Card_RemoveButtonPressed(Service service)
+        {
+            EditServiceWindow.EditServiceWindow editServiceWindow = new EditServiceWindow.EditServiceWindow()
+            {
+                Service = null
+            };
+            editServiceWindow.ShowDialog();
+            await Refresh();
+        }
+
+        private async Task Refresh()
+        {
+            DefaultServices = Database.Entities.Service.ToList();
+            await DoStuff();
+        }
     }
 
     public class Filter

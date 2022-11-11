@@ -122,6 +122,9 @@
     <Compile Include="UserControls\PasswordField.xaml.cs">
       <DependentUpon>PasswordField.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AuthWindow\AuthWindow.xaml.cs">
+      <DependentUpon>AuthWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EditServiceWindow\EditServiceWindow.xaml.cs">
       <DependentUpon>EditServiceWindow.xaml</DependentUpon>
     </Compile>
@@ -133,10 +136,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AuthWindow\AuthWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\AuthWindow\Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,12 +163,6 @@
     </Compile>
     <Compile Include="UserControls\ServiceCard.xaml.cs">
       <DependentUpon>ServiceCard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\AuthWindow\AuthWindow.xaml.cs">
-      <DependentUpon>AuthWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\AuthWindow\Pages\LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

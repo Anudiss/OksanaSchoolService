@@ -22,11 +22,15 @@ namespace School.UserControls
     /// </summary>
     public partial class ServiceCard : UserControl
     {
+        public delegate void ButtonPressedHandler(Service service);
         #region Service
         public Service Service
         {
             get { return (Service)GetValue(ServiceProperty); }
-            set { SetValue(ServiceProperty, value); }
+            set
+            {
+                SetValue(ServiceProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for Service.  This enables animation, styling, binding, etc...
@@ -34,11 +38,19 @@ namespace School.UserControls
             DependencyProperty.Register("Service", typeof(Service), typeof(ServiceCard));
         #endregion
 
+        public event ButtonPressedHandler EditButtonPressed;
+        public event ButtonPressedHandler RemoveButtonPressed;
 
         public ServiceCard()
         {
             InitializeComponent();
         }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e) =>
+            EditButtonPressed?.Invoke(Service);
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e) =>
+            RemoveButtonPressed?.Invoke(Service);
     }
 
     [ValueConversion(typeof(Service), typeof(string))]
@@ -84,4 +96,17 @@ namespace School.UserControls
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
     }
 
+    [ValueConversion(typeof(Service), typeof(TextDecoration))]
+    public class TextDecorationConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Service service == false)
+                return null;
+
+            return service.Discount > 0 ? TextDecorations.Strikethrough : null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
+    }
 }

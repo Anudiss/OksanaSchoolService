@@ -1,4 +1,6 @@
-﻿using System;
+﻿using School.Resourses;
+using School.Windows.AuthWindow;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,20 @@ namespace School.Windows.MainWindow
         public MainWindow()
         {
             InitializeComponent();
+
+            InitializeAuthWindow();
+        }
+
+        private void InitializeAuthWindow()
+        {
+            AuthWindow.AuthWindow authWindow = new AuthWindow.AuthWindow();
+            authWindow.Closing += (sender, args) =>
+            {
+                if (StaticData.AuthtorizatedUser == null)
+                    Close();
+            };
+
+            authWindow.ShowDialog();
         }
     }
 }
